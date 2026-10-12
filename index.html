@@ -1,6 +1,260 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hisab Calculator Book</title>
+<script>
+window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 <style>
-   div{min-height:1em;}
+:root {
+--primary: #4A607A;
+--secondary: #F3F4F6;
+--success: #10B981;
+--danger: #EF4444;
+--text: #1F2937;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background-color: #E5E7EB; color: var(--text); padding: 10px; }
+.container { max-width: 600px; margin: 0 auto; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+
+/* Top Navigation Header */
+.top-bar { display: flex; justify-content: space-between; margin-bottom: 15px; gap: 10px; }
+.top-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; gap: 5px; }
+
+h2 { text-align: center; color: var(--primary); margin-bottom: 15px; font-size: 22px; border-bottom: 2px solid var(--secondary); padding-bottom: 8px; }
+
+/* Table Styling */
+table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+th, td { border: 1px solid #D1D5DB; padding: 8px; text-align: center; font-size: 14px; }
+th { background-color: var(--secondary); color: var(--primary); }
+input[type="number"], input[type="text"] { width: 100%; padding: 6px; border: 1px solid #CCC; border-radius: 4px; text-align: center; }
+
+/* Action Buttons */
+.action-bar { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; }
+.btn { padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; }
+.btn-add { background: var(--primary); color: white; }
+.btn-clear { background: var(--danger); color: white; }
+.btn-save { background: var(--success); color: white; width: 100%; padding: 12px; font-size: 16px; margin-top: 15px; }
+
+/* Totals & Bottom Section */
+.grand-total-box { background: var(--secondary); padding: 12px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold; color: var(--primary); margin-bottom: 15px; border: 1px dashed var(--primary); }
+.bottom-section { background: #F9FAFB; padding: 15px; border-radius: 8px; border: 1px solid #E5E7EB; }
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
+.balance-box { font-size: 16px; font-weight: bold; margin-top: 10px; padding: 8px; border-radius: 4px; }
+.balance-due { background: #FEE2E2; color: var(--danger); }
+.balance-clear { background: #D1FAE5; color: var(--success); }
+
+/* History Section */
+.history-section { margin-top: 25px; border-top: 2px solid #E5E7EB; padding-top: 15px; }
+.history-title { font-size: 16px; font-weight: bold; color: var(--primary); margin-bottom: 10px; }
+.history-item { background: #F3F4F6; padding: 10px; border-radius: 6px; margin-bottom: 8px; font-size: 13px; border-left: 4px solid var(--primary); position: relative; }
+.delete-hist { position: absolute; right: 10px; top: 10px; color: var(--danger); cursor: pointer; font-weight: bold; }
+
+/* Pop-up Calculator Modal */
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+.calc-box { background: #333; padding: 15px; border-radius: 12px; width: 280px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+#calc-screen { width: 100%; height: 50px; background: #FFF; border: none; margin-bottom: 15px; font-size: 24px; text-align: right; padding: 10px; border-radius: 6px; font-family: monospace; }
+.calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.calc-btn { padding: 15px; font-size: 18px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; }
+.calc-num { background: #E5E7EB; color: black; }
+.calc-op { background: #F59E0B; color: white; }
+.calc-eq { background: var(--success); color: white; grid-column: span 2; }
+.calc-c { background: var(--danger); color: white; }
+.close-calc { background: #666; color: white; grid-column: span 2; }
 </style>
-<body>&lt;!DOCTYPE html&gt;<br/>&lt;html lang=&quot;en&quot;&gt;<br/>&lt;head&gt;<br/>    &lt;meta charset=&quot;UTF-8&quot;&gt;<br/>    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;<br/>    &lt;title&gt;Hisab Calculator Book&lt;/title&gt;<br/>    &lt;script&gt;<br/>      window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };<br/>    &lt;/script&gt;<br/>    &lt;script defer src=&quot;/_vercel/insights/script.js&quot;&gt;&lt;/script&gt;<br/>    &lt;style&gt;<br/>        :root {<br/>            --primary: #4A607A;<br/>            --secondary: #F3F4F6;<br/>            --success: #10B981;<br/>            --danger: #EF4444;<br/>            --text: #1F2937;<br/>        }<br/>        * { box-sizing: border-box; margin: 0; padding: 0; font-family: &#39;Segoe UI&#39;, Tahoma, Geneva, Verdana, sans-serif; }<br/>        body { background-color: #E5E7EB; color: var(--text); padding: 10px; }<br/>        .container { max-width: 600px; margin: 0 auto; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }<br/>        <br/>        /* Top Navigation Header */<br/>        .top-bar { display: flex; justify-content: space-between; margin-bottom: 15px; gap: 10px; }<br/>        .top-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; gap: 5px; }<br/>        <br/>        h2 { text-align: center; color: var(--primary); margin-bottom: 15px; font-size: 22px; border-bottom: 2px solid var(--secondary); padding-bottom: 8px; }<br/>        <br/>        /* Table Styling */<br/>        table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }<br/>        th, td { border: 1px solid #D1D5DB; padding: 8px; text-align: center; font-size: 14px; }<br/>        th { background-color: var(--secondary); color: var(--primary); }<br/>        input[type=&quot;number&quot;], input[type=&quot;text&quot;] { width: 100%; padding: 6px; border: 1px solid #CCC; border-radius: 4px; text-align: center; }<br/>        <br/>        /* Action Buttons */<br/>        .action-bar { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; }<br/>        .btn { padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; }<br/>        .btn-add { background: var(--primary); color: white; }<br/>        .btn-clear { background: var(--danger); color: white; }<br/>        .btn-save { background: var(--success); color: white; width: 100%; padding: 12px; font-size: 16px; margin-top: 15px; }<br/>        <br/>        /* Totals &amp; Bottom Section */<br/>        .grand-total-box { background: var(--secondary); padding: 12px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold; color: var(--primary); margin-bottom: 15px; border: 1px dashed var(--primary); }<br/>        .bottom-section { background: #F9FAFB; padding: 15px; border-radius: 8px; border: 1px solid #E5E7EB; }<br/>        .form-group { margin-bottom: 12px; }<br/>        .form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }<br/>        .balance-box { font-size: 16px; font-weight: bold; margin-top: 10px; padding: 8px; border-radius: 4px; }<br/>        .balance-due { background: #FEE2E2; color: var(--danger); }<br/>        .balance-clear { background: #D1FAE5; color: var(--success); }<br/>        <br/>        /* History Section */<br/>        .history-section { margin-top: 25px; border-top: 2px solid #E5E7EB; padding-top: 15px; }<br/>        .history-title { font-size: 16px; font-weight: bold; color: var(--primary); margin-bottom: 10px; }<br/>        .history-item { background: #F3F4F6; padding: 10px; border-radius: 6px; margin-bottom: 8px; font-size: 13px; border-left: 4px solid var(--primary); position: relative; }<br/>        .delete-hist { position: absolute; right: 10px; top: 10px; color: var(--danger); cursor: pointer; font-weight: bold; }<br/><br/>        /* Pop-up Calculator Modal */<br/>        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; }<br/>        .calc-box { background: #333; padding: 15px; border-radius: 12px; width: 280px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }<br/>        #calc-screen { width: 100%; height: 50px; background: #FFF; border: none; margin-bottom: 15px; font-size: 24px; text-align: right; padding: 10px; border-radius: 6px; font-family: monospace; }<br/>        .calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }<br/>        .calc-btn { padding: 15px; font-size: 18px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; }<br/>        .calc-num { background: #E5E7EB; color: black; }<br/>        .calc-op { background: #F59E0B; color: white; }<br/>        .calc-eq { background: var(--success); color: white; grid-column: span 2; }<br/>        .calc-c { background: var(--danger); color: white; }<br/>        .close-calc { background: #666; color: white; grid-column: span 2; }<br/>    &lt;/style&gt;<br/>&lt;/head&gt;<br/>&lt;body&gt;<br/><br/>&lt;div class=&quot;container&quot;&gt;<br/>    &lt;!-- Top Buttons --&gt;<br/>    &lt;div class=&quot;top-bar&quot;&gt;<br/>        &lt;button class=&quot;top-btn&quot; onclick=&quot;openCalculator()&quot;&gt;Calculator&lt;/button&gt;<br/>    &lt;/div&gt;<br/><br/>    &lt;h2&gt;Hisab Calculator Book&lt;/h2&gt;<br/><br/>    &lt;!-- Item Table --&gt;<br/>    &lt;table&gt;<br/>        &lt;thead&gt;<br/>            &lt;tr&gt;<br/>                &lt;th style=&quot;width: 10%;&quot;&gt;Sr. No&lt;/th&gt;<br/>                &lt;th&gt;Quantity (Qty)&lt;/th&gt;<br/>                &lt;th&gt;Price (Keemat)&lt;/th&gt;<br/>                &lt;th&gt;Total&lt;/th&gt;<br/>            &lt;/tr&gt;<br/>        &lt;/thead&gt;<br/>        &lt;tbody id=&quot;table-body&quot;&gt;<br/>            &lt;tr&gt;<br/>                &lt;td&gt;1&lt;/td&gt;<br/>                &lt;td&gt;&lt;input type=&quot;number&quot; class=&quot;qty-input&quot; oninput=&quot;calculateTotal()&quot; min=&quot;0&quot;&gt;&lt;/td&gt;<br/>                &lt;td&gt;&lt;input type=&quot;number&quot; class=&quot;price-input&quot; oninput=&quot;calculateTotal()&quot; min=&quot;0&quot;&gt;&lt;/td&gt;<br/>                &lt;td class=&quot;row-total&quot;&gt;Rs. 0.00&lt;/td&gt;<br/>            &lt;/tr&gt;<br/>        &lt;/tbody&gt;<br/>    &lt;/table&gt;<br/><br/>    &lt;!-- Table Actions --&gt;<br/>    &lt;div class=&quot;action-bar&quot;&gt;<br/>        &lt;button class=&quot;btn btn-add&quot; onclick=&quot;addRow()&quot;&gt;[+] Add Row&lt;/button&gt;<br/>        &lt;button class=&quot;btn btn-clear&quot; onclick=&quot;clearForm()&quot;&gt;Clear Form&lt;/button&gt;<br/>    &lt;/div&gt;<br/><br/>    &lt;!-- Grand Total Box --&gt;<br/>    &lt;div class=&quot;grand-total-box&quot;&gt;<br/>        &lt;span&gt;GRAND TOTAL:&lt;/span&gt; &lt;span id=&quot;grand-total-val&quot;&gt;Rs. 0.00&lt;/span&gt;<br/>    &lt;/div&gt;<br/><br/>    &lt;!-- Independent Bottom Section --&gt;<br/>    &lt;div class=&quot;bottom-section&quot;&gt;<br/>        &lt;div class=&quot;form-group&quot;&gt;<br/>            &lt;label&gt;Work Description:&lt;/label&gt;<br/>            &lt;input type=&quot;text&quot; id=&quot;work-desc&quot; placeholder=&quot;Enter work name or details...&quot;&gt;<br/>        &lt;/div&gt;<br/>        &lt;div class=&quot;form-group&quot;&gt;<br/>            &lt;label&gt;Amount Received:&lt;/label&gt;<br/>            &lt;input type=&quot;number&quot; id=&quot;amt-received&quot; oninput=&quot;calculateTotal()&quot; min=&quot;0&quot; placeholder=&quot;Rs. 0&quot;&gt;<br/>        &lt;/div&gt;<br/>        &lt;div class=&quot;balance-box balance-clear&quot; id=&quot;balance-container&quot;&gt;<br/>            &lt;span id=&quot;lbl-balance&quot;&gt;Balance Due:&lt;/span&gt; &lt;span id=&quot;balance-val&quot;&gt;Rs. 0.00&lt;/span&gt;<br/>        &lt;/div&gt;<br/>    &lt;/div&gt;<br/><br/>    &lt;!-- Save Button --&gt;<br/>    &lt;button class=&quot;btn btn-save&quot; onclick=&quot;saveHisab()&quot;&gt;Save Record&lt;/button&gt;<br/><br/>    &lt;!-- History Section --&gt;<br/>    &lt;div class=&quot;history-section&quot;&gt;<br/>        &lt;div class=&quot;history-title&quot;&gt;Saved Records:&lt;/div&gt;<br/>        &lt;div id=&quot;history-list&quot;&gt;&lt;/div&gt;<br/>    &lt;/div&gt;<br/>&lt;/div&gt;<br/><br/>&lt;!-- Calculator Modal Popup --&gt;<br/>&lt;div class=&quot;modal&quot; id=&quot;calcModal&quot;&gt;<br/>    &lt;div class=&quot;calc-box&quot;&gt;<br/>        &lt;input type=&quot;text&quot; id=&quot;calc-screen&quot; readonly&gt;<br/>        &lt;div class=&quot;calc-buttons&quot;&gt;<br/>            &lt;button class=&quot;calc-btn calc-c&quot; onclick=&quot;clearCalc()&quot;&gt;C&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-op&quot; onclick=&quot;pressCalc(&#39;/&#39;)&quot;&gt;/&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-op&quot; onclick=&quot;pressCalc(&#39;*&#39;)&quot;&gt;*&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-op&quot; onclick=&quot;pressCalc(&#39;-&#39;)&quot;&gt;-&lt;/button&gt;<br/>            <br/>            &lt;button class=&quot;calc-btn calc-num&quot; onclick=&quot;pressCalc(&#39;7&#39;)&quot;&gt;7&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-num&quot; onclick=&quot;pressCalc(&#39;8&#39;)&quot;&gt;8&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-num&quot; onclick=&quot;pressCalc(&#39;9&#39;)&quot;&gt;9&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-op&quot; onclick=&quot;pressCalc(&#39;+&#39;)&quot;&gt;+&lt;/button&gt;<br/>            <br/>            &lt;button class=&quot;calc-btn calc-num&quot; onclick=&quot;pressCalc(&#39;4&#39;)&quot;&gt;4&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-num&quot; onclick=&quot;pressCalc(&#39;5&#39;)&quot;&gt;5&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-num&quot; onclick=&quot;pressCalc(&#39;6&#39;)&quot;&gt;6&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-eq&quot; onclick=&quot;solveCalc()&quot;&gt;=&lt;/button&gt;<br/>            <br/>            &lt;button class=&quot;calc-btn calc-num&quot; onclick=&quot;pressCalc(&#39;1&#39;)&quot;&gt;1&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-num&quot; onclick=&quot;pressCalc(&#39;2&#39;)&quot;&gt;2&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-num&quot; onclick=&quot;pressCalc(&#39;3&#39;)&quot;&gt;3&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-num&quot; onclick=&quot;pressCalc(&#39;0&#39;)&quot;&gt;0&lt;/button&gt;<br/>            <br/>            &lt;button class=&quot;calc-btn close-calc&quot; onclick=&quot;closeCalculator()&quot;&gt;Close&lt;/button&gt;<br/>            &lt;button class=&quot;calc-btn calc-num&quot; onclick=&quot;pressCalc(&#39;.&#39;)&quot;&gt;.&lt;/button&gt;<br/>        &lt;/div&gt;<br/>    &lt;/div&gt;<br/>&lt;/div&gt;<br/><br/>&lt;script&gt;<br/>    function calculateTotal() {<br/>        const rows = document.querySelectorAll(&#39;#table-body tr&#39;);<br/>        let grandTotal = 0;<br/><br/>        rows.forEach(row =&gt; {<br/>            const qty = parseFloat(row.querySelector(&#39;.qty-input&#39;).value) || 0;<br/>            const price = parseFloat(row.querySelector(&#39;.price-input&#39;).value) || 0;<br/>            const total = qty * price;<br/>            row.querySelector(&#39;.row-total&#39;).innerText = &#39;Rs. &#39; + total.toFixed(2);<br/>            grandTotal += total;<br/>        });<br/><br/>        document.getElementById(&#39;grand-total-val&#39;).innerText = &#39;Rs. &#39; + grandTotal.toFixed(2);<br/><br/>        const received = parseFloat(document.getElementById(&#39;amt-received&#39;).value) || 0;<br/>        const balance = grandTotal - received;<br/>        const balContainer = document.getElementById(&#39;balance-container&#39;);<br/>        const balVal = document.getElementById(&#39;balance-val&#39;);<br/><br/>        balVal.innerText = &#39;Rs. &#39; + Math.abs(balance).toFixed(2);<br/><br/>        if (balance &gt; 0) {<br/>            balContainer.className = &quot;balance-box balance-due&quot;;<br/>            document.getElementById(&#39;lbl-balance&#39;).innerText = &quot;Balance Due:&quot;;<br/>        } else {<br/>            balContainer.className = &quot;balance-box balance-clear&quot;;<br/>            document.getElementById(&#39;lbl-balance&#39;).innerText = &quot;Balance Clear (Advance):&quot;;<br/>        }<br/>    }<br/><br/>    function addRow() {<br/>        const tbody = document.getElementById(&#39;table-body&#39;);<br/>        const rowCount = tbody.children.length + 1;<br/>        const tr = document.createElement(&#39;tr&#39;);<br/>        tr.innerHTML = `<br/>            &lt;td&gt;${rowCount}&lt;/td&gt;<br/>            &lt;td&gt;&lt;input type=&quot;number&quot; class=&quot;qty-input&quot; oninput=&quot;calculateTotal()&quot; min=&quot;0&quot;&gt;&lt;/td&gt;<br/>            &lt;td&gt;&lt;input type=&quot;number&quot; class=&quot;price-input&quot; oninput=&quot;calculateTotal()&quot; min=&quot;0&quot;&gt;&lt;/td&gt;<br/>            &lt;td class=&quot;row-total&quot;&gt;Rs. 0.00&lt;/td&gt;<br/>        `;<br/>        tbody.appendChild(tr);<br/>    }<br/><br/>    function clearForm() {<br/>        document.getElementById(&#39;table-body&#39;).innerHTML = `<br/>            &lt;tr&gt;<br/>                &lt;td&gt;1&lt;/td&gt;<br/>                &lt;td&gt;&lt;input type=&quot;number&quot; class=&quot;qty-input&quot; oninput=&quot;calculateTotal()&quot; min=&quot;0&quot;&gt;&lt;/td&gt;<br/>                &lt;td&gt;&lt;input type=&quot;number&quot; class=&quot;price-input&quot; oninput=&quot;calculateTotal()&quot; min=&quot;0&quot;&gt;&lt;/td&gt;<br/>                &lt;td class=&quot;row-total&quot;&gt;Rs. 0.00&lt;/td&gt;<br/>            &lt;/tr&gt;<br/>        `;<br/>        document.getElementById(&#39;work-desc&#39;).value = &#39;&#39;;<br/>        document.getElementById(&#39;amt-received&#39;).value = &#39;&#39;;<br/>        calculateTotal();<br/>    }<br/><br/>    function saveHisab() {<br/>        const grandTotal = document.getElementById(&#39;grand-total-val&#39;).innerText;<br/>        const work = document.getElementById(&#39;work-desc&#39;).value || &#39;Unnamed Work&#39;;<br/>        const balance = document.getElementById(&#39;balance-val&#39;).innerText;<br/>        <br/>        if (grandTotal === &#39;Rs. 0.00&#39;) {<br/>            alert(&#39;Please enter some calculations first!&#39;);<br/>            return;<br/>        }<br/><br/>        const histList = document.getElementById(&#39;history-list&#39;);<br/>        const div = document.createElement(&#39;div&#39;);<br/>        div.className = &#39;history-item&#39;;<br/>        div.innerHTML = `<br/>            &lt;span class=&quot;delete-hist&quot; onclick=&quot;this.parentElement.remove()&quot;&gt;X&lt;/span&gt;<br/>            &lt;strong&gt;${work}&lt;/strong&gt;&lt;br&gt;<br/>            Total: ${grandTotal} | Balance: ${balance}<br/>        `;<br/>        histList.prepend(div);<br/>        clearForm();<br/>    }<br/><br/>    function openCalculator() { document.getElementById(&#39;calcModal&#39;).style.display = &#39;flex&#39;; }<br/>    function closeCalculator() { document.getElementById(&#39;calcModal&#39;).style.display = &#39;none&#39;; }<br/>    function pressCalc(val) { document.getElementById(&#39;calc-screen&#39;).value += val; }<br/>    function clearCalc() { document.getElementById(&#39;calc-screen&#39;).value = &#39;&#39;; }<br/>    function solveCalc() {<br/>        try {<br/>            document.getElementById(&#39;calc-screen&#39;).value = eval(document.getElementById(&#39;calc-screen&#39;).value);<br/>        } catch(e) {<br/>            document.getElementById(&#39;calc-screen&#39;).value = &#39;Error&#39;;<br/>        }<br/>    }<br/>&lt;/script&gt;<br/>&lt;/body&gt;<br/>&lt;/html&gt;<br/></body>
+</head>
+<body>
+
+<div class="container">
+<!-- Top Buttons -->
+<div class="top-bar">
+<button class="top-btn" onclick="openCalculator()">Calculator</button>
+</div>
+
+<h2>Hisab Calculator Book</h2>
+
+<!-- Item Table -->
+<table>
+<thead>
+<tr>
+<th style="width: 10%;">Sr. No</th>
+<th>Quantity (Qty)</th>
+<th>Price (Keemat)</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody id="table-body">
+<tr>
+<td>1</td>
+<td><input type="number" class="qty-input" oninput="calculateTotal()" min="0"></td>
+<td><input type="number" class="price-input" oninput="calculateTotal()" min="0"></td>
+<td class="row-total">Rs. 0.00</td>
+</tr>
+</tbody>
+</table>
+
+<!-- Table Actions -->
+<div class="action-bar">
+<button class="btn btn-add" onclick="addRow()">[+] Add Row</button>
+<button class="btn btn-clear" onclick="clearForm()">Clear Form</button>
+</div>
+
+<!-- Grand Total Box -->
+<div class="grand-total-box">
+<span>GRAND TOTAL:</span> <span id="grand-total-val">Rs. 0.00</span>
+</div>
+
+<!-- Independent Bottom Section -->
+<div class="bottom-section">
+<div class="form-group">
+<label>Work Description:</label>
+<input type="text" id="work-desc" placeholder="Enter work name or details...">
+</div>
+<div class="form-group">
+<label>Amount Received:</label>
+<input type="number" id="amt-received" oninput="calculateTotal()" min="0" placeholder="Rs. 0">
+</div>
+<div class="balance-box balance-clear" id="balance-container">
+<span id="lbl-balance">Balance Due:</span> <span id="balance-val">Rs. 0.00</span>
+</div>
+</div>
+
+<!-- Save Button -->
+<button class="btn btn-save" onclick="saveHisab()">Save Record</button>
+
+<!-- History Section -->
+<div class="history-section">
+<div class="history-title">Saved Records:</div>
+<div id="history-list"></div>
+</div>
+</div>
+
+<!-- Calculator Modal Popup -->
+<div class="modal" id="calcModal">
+<div class="calc-box">
+<input type="text" id="calc-screen" readonly>
+<div class="calc-buttons">
+<button class="calc-btn calc-c" onclick="clearCalc()">C</button>
+<button class="calc-btn calc-op" onclick="pressCalc('/')">/</button>
+<button class="calc-btn calc-op" onclick="pressCalc('*')">*</button>
+<button class="calc-btn calc-op" onclick="pressCalc('-')">-</button>
+
+<button class="calc-btn calc-num" onclick="pressCalc('7')">7</button>
+<button class="calc-btn calc-num" onclick="pressCalc('8')">8</button>
+<button class="calc-btn calc-num" onclick="pressCalc('9')">9</button>
+<button class="calc-btn calc-op" onclick="pressCalc('+')">+</button>
+
+<button class="calc-btn calc-num" onclick="pressCalc('4')">4</button>
+<button class="calc-btn calc-num" onclick="pressCalc('5')">5</button>
+<button class="calc-btn calc-num" onclick="pressCalc('6')">6</button>
+<button class="calc-btn calc-eq" onclick="solveCalc()">=</button>
+
+<button class="calc-btn calc-num" onclick="pressCalc('1')">1</button>
+<button class="calc-btn calc-num" onclick="pressCalc('2')">2</button>
+<button class="calc-btn calc-num" onclick="pressCalc('3')">3</button>
+<button class="calc-btn calc-num" onclick="pressCalc('0')">0</button>
+
+<button class="calc-btn close-calc" onclick="closeCalculator()">Close</button>
+<button class="calc-btn calc-num" onclick="pressCalc('.')">.</button>
+</div>
+</div>
+</div>
+
+<script>
+function calculateTotal() {
+const rows = document.querySelectorAll('#table-body tr');
+let grandTotal = 0;
+
+rows.forEach(row => {
+const qty = parseFloat(row.querySelector('.qty-input').value) || 0;
+const price = parseFloat(row.querySelector('.price-input').value) || 0;
+const total = qty * price;
+row.querySelector('.row-total').innerText = 'Rs. ' + total.toFixed(2);
+grandTotal += total;
+});
+
+document.getElementById('grand-total-val').innerText = 'Rs. ' + grandTotal.toFixed(2);
+
+const received = parseFloat(document.getElementById('amt-received').value) || 0;
+const balance = grandTotal - received;
+const balContainer = document.getElementById('balance-container');
+const balVal = document.getElementById('balance-val');
+
+balVal.innerText = 'Rs. ' + Math.abs(balance).toFixed(2);
+
+if (balance > 0) {
+balContainer.className = "balance-box balance-due";
+document.getElementById('lbl-balance').innerText = "Balance Due:";
+} else {
+balContainer.className = "balance-box balance-clear";
+document.getElementById('lbl-balance').innerText = "Balance Clear (Advance):";
+}
+}
+
+function addRow() {
+const tbody = document.getElementById('table-body');
+const rowCount = tbody.children.length + 1;
+const tr = document.createElement('tr');
+tr.innerHTML = `
+<td>${rowCount}</td>
+<td><input type="number" class="qty-input" oninput="calculateTotal()" min="0"></td>
+<td><input type="number" class="price-input" oninput="calculateTotal()" min="0"></td>
+<td class="row-total">Rs. 0.00</td>
+`;
+tbody.appendChild(tr);
+}
+
+function clearForm() {
+document.getElementById('table-body').innerHTML = `
+<tr>
+<td>1</td>
+<td><input type="number" class="qty-input" oninput="calculateTotal()" min="0"></td>
+<td><input type="number" class="price-input" oninput="calculateTotal()" min="0"></td>
+<td class="row-total">Rs. 0.00</td>
+</tr>
+`;
+document.getElementById('work-desc').value = '';
+document.getElementById('amt-received').value = '';
+calculateTotal();
+}
+
+function saveHisab() {
+const grandTotal = document.getElementById('grand-total-val').innerText;
+const work = document.getElementById('work-desc').value || 'Unnamed Work';
+const balance = document.getElementById('balance-val').innerText;
+
+if (grandTotal === 'Rs. 0.00') {
+alert('Please enter some calculations first!');
+return;
+}
+
+const histList = document.getElementById('history-list');
+const div = document.createElement('div');
+div.className = 'history-item';
+div.innerHTML = `
+<span class="delete-hist" onclick="this.parentElement.remove()">X</span>
+<strong>${work}</strong><br>
+Total: ${grandTotal} | Balance: ${balance}
+`;
+histList.prepend(div);
+clearForm();
+}
+
+function openCalculator() { document.getElementById('calcModal').style.display = 'flex'; }
+function closeCalculator() { document.getElementById('calcModal').style.display = 'none'; }
+function pressCalc(val) { document.getElementById('calc-screen').value += val; }
+function clearCalc() { document.getElementById('calc-screen').value = ''; }
+function solveCalc() {
+try {
+document.getElementById('calc-screen').value = eval(document.getElementById('calc-screen').value);
+} catch(e) {
+document.getElementById('calc-screen').value = 'Error';
+}
+}
+</script>
+</body>
 </html>
