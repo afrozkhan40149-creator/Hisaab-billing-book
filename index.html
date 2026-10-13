@@ -1,262 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hisab Calculator Book</title>
-<link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#000000">
-<script>
-window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/insights/script.js"></script>
-<style>
-:root {
---primary: #4A607A;
---secondary: #F3F4F6;
---success: #10B981;
---danger: #EF4444;
---text: #1F2937;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-body { background-color: #E5E7EB; color: var(--text); padding: 10px; }
-.container { max-width: 600px; margin: 0 auto; background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-
-/* Top Navigation Header */
-.top-bar { display: flex; justify-content: space-between; margin-bottom: 15px; gap: 10px; }
-.top-btn { flex: 1; padding: 10px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px; background: var(--primary); color: white; display: flex; align-items: center; justify-content: center; gap: 5px; }
-
-h2 { text-align: center; color: var(--primary); margin-bottom: 15px; font-size: 22px; border-bottom: 2px solid var(--secondary); padding-bottom: 8px; }
-
-/* Table Styling */
-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
-th, td { border: 1px solid #D1D5DB; padding: 8px; text-align: center; font-size: 14px; }
-th { background-color: var(--secondary); color: var(--primary); }
-input[type="number"], input[type="text"] { width: 100%; padding: 6px; border: 1px solid #CCC; border-radius: 4px; text-align: center; }
-
-/* Action Buttons */
-.action-bar { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; }
-.btn { padding: 10px 15px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; }
-.btn-add { background: var(--primary); color: white; }
-.btn-clear { background: var(--danger); color: white; }
-.btn-save { background: var(--success); color: white; width: 100%; padding: 12px; font-size: 16px; margin-top: 15px; }
-
-/* Totals & Bottom Section */
-.grand-total-box { background: var(--secondary); padding: 12px; border-radius: 8px; text-align: center; font-size: 18px; font-weight: bold; color: var(--primary); margin-bottom: 15px; border: 1px dashed var(--primary); }
-.bottom-section { background: #F9FAFB; padding: 15px; border-radius: 8px; border: 1px solid #E5E7EB; }
-.form-group { margin-bottom: 12px; }
-.form-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
-.balance-box { font-size: 16px; font-weight: bold; margin-top: 10px; padding: 8px; border-radius: 4px; }
-.balance-due { background: #FEE2E2; color: var(--danger); }
-.balance-clear { background: #D1FAE5; color: var(--success); }
-
-/* History Section */
-.history-section { margin-top: 25px; border-top: 2px solid #E5E7EB; padding-top: 15px; }
-.history-title { font-size: 16px; font-weight: bold; color: var(--primary); margin-bottom: 10px; }
-.history-item { background: #F3F4F6; padding: 10px; border-radius: 6px; margin-bottom: 8px; font-size: 13px; border-left: 4px solid var(--primary); position: relative; }
-.delete-hist { position: absolute; right: 10px; top: 10px; color: var(--danger); cursor: pointer; font-weight: bold; }
-
-/* Pop-up Calculator Modal */
-.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
-.calc-box { background: #333; padding: 15px; border-radius: 12px; width: 280px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-#calc-screen { width: 100%; height: 50px; background: #FFF; border: none; margin-bottom: 15px; font-size: 24px; text-align: right; padding: 10px; border-radius: 6px; font-family: monospace; }
-.calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-.calc-btn { padding: 15px; font-size: 18px; font-weight: bold; border: none; border-radius: 6px; cursor: pointer; }
-.calc-num { background: #E5E7EB; color: black; }
-.calc-op { background: #F59E0B; color: white; }
-.calc-eq { background: var(--success); color: white; grid-column: span 2; }
-.calc-c { background: var(--danger); color: white; }
-.close-calc { background: #666; color: white; grid-column: span 2; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hisaab Billing Book - Hindi & English</title>
+    
+    <!-- PWA Manifest Link -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-slate-50 min-h-screen font-sans">
+    <div class="max-w-md mx-auto p-4">
+        <header class="text-center my-6">
+            <h1 class="text-2xl font-bold text-slate-800">Hisaab Billing Book</h1>
+            <p class="text-sm text-slate-500">Hindi & English Billing Assistant</p>
+        </header>
 
-<div class="container">
-<!-- Top Buttons -->
-<div class="top-bar">
-<button class="top-btn" onclick="openCalculator()">Calculator</button>
-</div>
+        <!-- Main Calculator Container -->
+        <div class="bg-white rounded-2xl shadow-sm p-5 border border-slate-100">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-slate-700 mb-1">Item Name / वस्तु का नाम</label>
+                <input type="text" id="itemName" placeholder="e.g., T-Shirt / टी-शर्ट" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+            </div>
 
-<h2>Hisab Calculator Book</h2>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Quantity / मात्रा</label>
+                    <input type="number" id="itemQty" value="1" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Price (₹) / कीमत</label>
+                    <input type="number" id="itemPrice" placeholder="0" class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+            </div>
 
-<!-- Item Table -->
-<table>
-<thead>
-<tr>
-<th style="width: 10%;">Sr. No</th>
-<th>Quantity (Qty)</th>
-<th>Price (Keemat)</th>
-<th>Total</th>
-</tr>
-</thead>
-<tbody id="table-body">
-<tr>
-<td>1</td>
-<td><input type="number" class="qty-input" oninput="calculateTotal()" min="0"></td>
-<td><input type="number" class="price-input" oninput="calculateTotal()" min="0"></td>
-<td class="row-total">Rs. 0.00</td>
-</tr>
-</tbody>
-</table>
+            <button onclick="calculateTotal()" class="w-full bg-blue-600 text-white py-2.5 rounded-lg font-medium hover:bg-blue-700 transition">Add Item / जोड़ें</button>
+        </div>
 
-<!-- Table Actions -->
-<div class="action-bar">
-<button class="btn btn-add" onclick="addRow()">[+] Add Row</button>
-<button class="btn btn-clear" onclick="clearForm()">Clear Form</button>
-</div>
+        <!-- Total Section -->
+        <div class="mt-6 bg-slate-900 text-white p-4 rounded-2xl flex justify-between items-center">
+            <span class="text-lg font-medium">Total / कुल राशि:</span>
+            <span id="grandTotal" class="text-2xl font-bold">₹0</span>
+        </div>
+    </div>
 
-<!-- Grand Total Box -->
-<div class="grand-total-box">
-<span>GRAND TOTAL:</span> <span id="grand-total-val">Rs. 0.00</span>
-</div>
-
-<!-- Independent Bottom Section -->
-<div class="bottom-section">
-<div class="form-group">
-<label>Work Description:</label>
-<input type="text" id="work-desc" placeholder="Enter work name or details...">
-</div>
-<div class="form-group">
-<label>Amount Received:</label>
-<input type="number" id="amt-received" oninput="calculateTotal()" min="0" placeholder="Rs. 0">
-</div>
-<div class="balance-box balance-clear" id="balance-container">
-<span id="lbl-balance">Balance Due:</span> <span id="balance-val">Rs. 0.00</span>
-</div>
-</div>
-
-<!-- Save Button -->
-<button class="btn btn-save" onclick="saveHisab()">Save Record</button>
-
-<!-- History Section -->
-<div class="history-section">
-<div class="history-title">Saved Records:</div>
-<div id="history-list"></div>
-</div>
-</div>
-
-<!-- Calculator Modal Popup -->
-<div class="modal" id="calcModal">
-<div class="calc-box">
-<input type="text" id="calc-screen" readonly>
-<div class="calc-buttons">
-<button class="calc-btn calc-c" onclick="clearCalc()">C</button>
-<button class="calc-btn calc-op" onclick="pressCalc('/')">/</button>
-<button class="calc-btn calc-op" onclick="pressCalc('*')">*</button>
-<button class="calc-btn calc-op" onclick="pressCalc('-')">-</button>
-
-<button class="calc-btn calc-num" onclick="pressCalc('7')">7</button>
-<button class="calc-btn calc-num" onclick="pressCalc('8')">8</button>
-<button class="calc-btn calc-num" onclick="pressCalc('9')">9</button>
-<button class="calc-btn calc-op" onclick="pressCalc('+')">+</button>
-
-<button class="calc-btn calc-num" onclick="pressCalc('4')">4</button>
-<button class="calc-btn calc-num" onclick="pressCalc('5')">5</button>
-<button class="calc-btn calc-num" onclick="pressCalc('6')">6</button>
-<button class="calc-btn calc-eq" onclick="solveCalc()">=</button>
-
-<button class="calc-btn calc-num" onclick="pressCalc('1')">1</button>
-<button class="calc-btn calc-num" onclick="pressCalc('2')">2</button>
-<button class="calc-btn calc-num" onclick="pressCalc('3')">3</button>
-<button class="calc-btn calc-num" onclick="pressCalc('0')">0</button>
-
-<button class="calc-btn close-calc" onclick="closeCalculator()">Close</button>
-<button class="calc-btn calc-num" onclick="pressCalc('.')">.</button>
-</div>
-</div>
-</div>
-
-<script>
-function calculateTotal() {
-const rows = document.querySelectorAll('#table-body tr');
-let grandTotal = 0;
-
-rows.forEach(row => {
-const qty = parseFloat(row.querySelector('.qty-input').value) || 0;
-const price = parseFloat(row.querySelector('.price-input').value) || 0;
-const total = qty * price;
-row.querySelector('.row-total').innerText = 'Rs. ' + total.toFixed(2);
-grandTotal += total;
-});
-
-document.getElementById('grand-total-val').innerText = 'Rs. ' + grandTotal.toFixed(2);
-
-const received = parseFloat(document.getElementById('amt-received').value) || 0;
-const balance = grandTotal - received;
-const balContainer = document.getElementById('balance-container');
-const balVal = document.getElementById('balance-val');
-
-balVal.innerText = 'Rs. ' + Math.abs(balance).toFixed(2);
-
-if (balance > 0) {
-balContainer.className = "balance-box balance-due";
-document.getElementById('lbl-balance').innerText = "Balance Due:";
-} else {
-balContainer.className = "balance-box balance-clear";
-document.getElementById('lbl-balance').innerText = "Balance Clear (Advance):";
-}
-}
-
-function addRow() {
-const tbody = document.getElementById('table-body');
-const rowCount = tbody.children.length + 1;
-const tr = document.createElement('tr');
-tr.innerHTML = `
-<td>${rowCount}</td>
-<td><input type="number" class="qty-input" oninput="calculateTotal()" min="0"></td>
-<td><input type="number" class="price-input" oninput="calculateTotal()" min="0"></td>
-<td class="row-total">Rs. 0.00</td>
-`;
-tbody.appendChild(tr);
-}
-
-function clearForm() {
-document.getElementById('table-body').innerHTML = `
-<tr>
-<td>1</td>
-<td><input type="number" class="qty-input" oninput="calculateTotal()" min="0"></td>
-<td><input type="number" class="price-input" oninput="calculateTotal()" min="0"></td>
-<td class="row-total">Rs. 0.00</td>
-</tr>
-`;
-document.getElementById('work-desc').value = '';
-document.getElementById('amt-received').value = '';
-calculateTotal();
-}
-
-function saveHisab() {
-const grandTotal = document.getElementById('grand-total-val').innerText;
-const work = document.getElementById('work-desc').value || 'Unnamed Work';
-const balance = document.getElementById('balance-val').innerText;
-
-if (grandTotal === 'Rs. 0.00') {
-alert('Please enter some calculations first!');
-return;
-}
-
-const histList = document.getElementById('history-list');
-const div = document.createElement('div');
-div.className = 'history-item';
-div.innerHTML = `
-<span class="delete-hist" onclick="this.parentElement.remove()">X</span>
-<strong>${work}</strong><br>
-Total: ${grandTotal} | Balance: ${balance}
-`;
-histList.prepend(div);
-clearForm();
-}
-
-function openCalculator() { document.getElementById('calcModal').style.display = 'flex'; }
-function closeCalculator() { document.getElementById('calcModal').style.display = 'none'; }
-function pressCalc(val) { document.getElementById('calc-screen').value += val; }
-function clearCalc() { document.getElementById('calc-screen').value = ''; }
-function solveCalc() {
-try {
-document.getElementById('calc-screen').value = eval(document.getElementById('calc-screen').value);
-} catch(e) {
-document.getElementById('calc-screen').value = 'Error';
-}
-}
-</script>
+    <script>
+        function calculateTotal() {
+            let qty = parseFloat(document.getElementById('itemQty').value) || 0;
+            let price = parseFloat(document.getElementById('itemPrice').value) || 0;
+            let total = qty * price;
+            document.getElementById('grandTotal').innerText = '₹' + total.toFixed(2);
+        }
+    </script>
 </body>
 </html>
