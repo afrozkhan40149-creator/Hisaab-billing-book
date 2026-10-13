@@ -12,8 +12,8 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-50 min-h-screen font-sans">
-    <div class="max-w-md mx-auto p-4">
+<body class="bg-slate-50 min-h-screen font-sans flex flex-col justify-between">
+    <div class="max-w-md mx-auto p-4 w-full">
         <header class="text-center my-6">
             <h1 class="text-2xl font-bold text-slate-800">Hisaab Billing Book</h1>
             <p class="text-sm text-slate-500">Hindi & English Billing Assistant</p>
@@ -46,6 +46,11 @@
             <span id="grandTotal" class="text-2xl font-bold">₹0</span>
         </div>
     </div>
+
+    <!-- Footer Section with Privacy Policy -->
+    <footer class="text-center py-6 border-t border-slate-200 mt-8">
+        <a href="privacy.html" class="text-sm text-blue-600 hover:text-blue-800 underline font-medium">Privacy Policy</a>
+    </footer>
 
     <script>
         function calculateTotal() {
