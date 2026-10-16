@@ -3,40 +3,45 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#16834a">
 <title>Karigar Diary</title>
 <style>
+:root{--g:#16834a;--p:#eaf7ee;--line:#d8e6dc;--ink:#17251b}
 *{box-sizing:border-box}
-body{margin:0;background:#f5f8f5;color:#18251d;font-family:Arial,sans-serif}
-header{background:#16834a;color:white;padding:16px}
-header h2{margin:0;border:0}
-main{max-width:750px;margin:auto;padding:12px}
-.card{background:white;border:1px solid #d8e6dc;border-radius:12px;padding:14px;margin-bottom:12px}
-h3{margin:0 0 12px;border-bottom:2px solid #16834a;padding-bottom:9px}
-label{display:block;font-size:13px;margin:9px 0 5px;color:#526458}
-input,textarea,select{width:100%;padding:11px;border:1px solid #cbd8ce;border-radius:8px;font:inherit;background:white}
-textarea{height:120px;line-height:1.8;background:repeating-linear-gradient(white,white 30px,#dce8ef 31px)}
-button{background:#16834a;color:white;border:0;border-radius:8px;padding:11px;margin:4px 2px;font-weight:bold}
-.secondary{background:#eaf7ee;color:#125c33;border:1px solid #c6e6d0}
+body{margin:0;background:#f5f8f5;color:var(--ink);font-family:Arial,sans-serif}
+header{background:var(--g);color:white;padding:16px}
+header h2{margin:0}
+header p{margin:6px 0}
+main{max-width:800px;margin:auto;padding:12px}
+.card{background:white;border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+h3{margin:0 0 12px;padding-bottom:8px;border-bottom:2px solid var(--g)}
+label{display:block;font-size:13px;margin:10px 0 5px}
+input,textarea,select{width:100%;padding:11px;border:1px solid #cbd8ce;border-radius:8px;font:inherit;background:white;color:var(--ink)}
+textarea{min-height:120px;line-height:1.8;background:repeating-linear-gradient(white,white 30px,#dce8ef 31px)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{border:0;border-radius:8px;padding:11px 13px;margin:4px 2px;background:var(--g);color:white;font-weight:bold;font-size:14px}
+.secondary{background:var(--p);color:#125c33;border:1px solid #c6e6d0}
 .danger{background:#fff0ef;color:#b42318}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.total{background:#eaf7ee;padding:12px;border-radius:8px;margin-top:8px}
-.total b{font-size:20px}
-.entry{border-bottom:1px solid #d8e6dc;padding:12px 0;overflow-wrap:anywhere}
-.small{font-size:12px}
-.hidden{display:none}
-@media(max-width:380px){.row{grid-template-columns:1fr}}
+.total{background:var(--p);padding:12px;border-radius:8px;margin-top:8px}
+.total b{display:block;font-size:20px;margin-top:5px;overflow-wrap:anywhere}
+.entry{border-bottom:1px solid var(--line);padding:12px 0;overflow-wrap:anywhere}
+.entry p{white-space:pre-wrap;line-height:1.6}
+.small{font-size:12px;color:#617267}
+.hidden{display:none!important}
+.actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+@media(max-width:400px){.row{grid-template-columns:1fr}}
+@media print{button,.no-print{display:none!important}body{background:white}.card{break-inside:avoid}}
 </style>
 </head>
 <body>
 <header>
-  <h2>📖 Karigar Diary</h2>
-  <p id="subtitle">कारीगर की रोज़ की डायरी</p>
-  <select id="language" onchange="translatePage()" style="width:auto">
-    <option value="hi">हिन्दी</option>
-    <option value="en">English</option>
-  </select>
+<h2>📖 Karigar Diary</h2>
+<p id="subtitle">कारीगर की रोज़ की डायरी</p>
+<select id="language" onchange="translatePage()" style="width:auto">
+<option value="hi">हिन्दी</option>
+<option value="en">English</option>
+</select>
 </header>
 
 <main>
@@ -48,7 +53,10 @@ button{background:#16834a;color:white;border:0;border-radius:8px;padding:11px;ma
 <input id="date" type="date">
 <label id="phoneLabel">मोबाइल नंबर</label>
 <input id="phone" type="tel" inputmode="tel" placeholder="मोबाइल नंबर">
+<div class="actions">
 <button class="secondary" onclick="loadDate()" id="openDate">इस तारीख का हिसाब खोलें</button>
+<button class="secondary" onclick="todayDate()" id="todayBtn">आज की तारीख</button>
+</div>
 </section>
 
 <section class="card">
@@ -58,123 +66,178 @@ button{background:#16834a;color:white;border:0;border-radius:8px;padding:11px;ma
 <div class="row">
 <div>
 <label id="qtyLabel">Quantity / मात्रा</label>
-<input id="qty" type="number" min="0" step="any" placeholder="0" oninput="calculate()">
+<input id="qty" type="number" min="0" step="any" inputmode="decimal" oninput="calculate()">
 </div>
 <div>
 <label id="priceLabel">एक Quantity का Price</label>
-<input id="price" type="number" min="0" step="any" placeholder="0" oninput="calculate()">
+<input id="price" type="number" min="0" step="any" inputmode="decimal" oninput="calculate()">
 </div>
 </div>
 <label id="costLabel">घटाने वाला खर्च / लागत</label>
-<input id="cost" type="number" min="0" step="any" placeholder="0" oninput="calculate()">
+<input id="cost" type="number" min="0" step="any" inputmode="decimal" value="0" oninput="calculate()">
+<p class="small" id="formula">कुल रकम = Quantity × Price. मुनाफ़ा = कुल रकम − खर्च।</p>
 
-<div class="total">
-  <span id="amountLabel">कुल रकम</span><br>
-  <b id="amount">₹0</b>
+<div class="total"><span id="amountLabel">कुल रकम</span><b id="amount">₹0</b></div>
+<div class="total" id="profitBox"><span id="profitLabel">मुनाफ़ा / नुकसान</span><b id="profit">₹0</b></div>
+
+<div class="actions">
+<button onclick="saveEntry()" id="saveBtn">काम Save करें</button>
+<button class="secondary" onclick="continueWork()" id="continueBtn">Continue / आगे लिखें</button>
+<button class="secondary" onclick="clearForm()" id="clearBtn">फॉर्म साफ़ करें</button>
 </div>
-<div class="total" id="profitBox">
-  <span id="profitLabel">खर्च घटाकर Profit / मुनाफ़ा</span><br>
-  <b id="profit">₹0</b>
-</div>
-
-<button onclick="saveEntry()" id="saveButton">काम Save करें</button>
-<button class="secondary" onclick="continueWork()" id="continueButton">Continue / आगे लिखें</button>
-<button class="secondary" onclick="clearForm()" id="clearButton">फॉर्म साफ़ करें</button>
-
 <div id="entries"></div>
 </section>
 
 <section class="card">
-<h3 id="totalTitle">Grand Total / कुल हिसाब</h3>
-<div class="total"><span id="grandAmountLabel">कुल रकम</span><br><b id="grandAmount">₹0</b></div>
-<div class="total"><span id="grandCostLabel">कुल खर्च</span><br><b id="grandCost">₹0</b></div>
-<div class="total" id="grandProfitBox"><span id="grandProfitLabel">Grand Profit / कुल मुनाफ़ा</span><br><b id="grandProfit">₹0</b></div>
-<button class="secondary" onclick="shareWhatsApp()" id="shareButton">WhatsApp Share</button>
-<button class="secondary" onclick="showCalculator()" id="calcButton">Calculator</button>
-<button class="secondary" onclick="downloadBackup()" id="backupButton">Backup Download</button>
-<button class="secondary" onclick="document.getElementById('restore').click()" id="restoreButton">Backup Restore</button>
-<input type="file" id="restore" accept=".json" class="hidden" onchange="restoreBackup(event)">
+<h3 id="grandTitle">Grand Total / कुल हिसाब</h3>
+<div class="total"><span id="totalAmountLabel">कुल रकम</span><b id="totalAmount">₹0</b></div>
+<div class="total"><span id="totalCostLabel">कुल खर्च</span><b id="totalCost">₹0</b></div>
+<div class="total" id="grandProfitBox"><span id="grandProfitLabel">Grand Profit / कुल मुनाफ़ा</span><b id="grandProfit">₹0</b></div>
+<div class="actions">
+<button class="secondary" onclick="shareWhatsApp()" id="shareBtn">WhatsApp Share</button>
+<button class="secondary" onclick="toggleCalculator()" id="calcBtn">Calculator</button>
+<button class="secondary" onclick="toggleSettings()" id="settingsBtn">Settings</button>
+<button class="secondary" onclick="backup()" id="backupBtn">Backup Download</button>
+<button class="secondary" onclick="$('restoreFile').click()" id="restoreBtn">Backup Restore</button>
+<button class="secondary" onclick="window.print()" id="printBtn">Print / PDF</button>
+<input id="restoreFile" type="file" accept=".json,application/json" hidden onchange="restoreBackup(event)">
+</div>
+<p class="small" id="storageNote">हिसाब इसी मोबाइल में सेव होता है। नियमित बैकअप रखें।</p>
 </section>
 
 <section class="card hidden" id="calculator">
-<h3 id="calculatorTitle">Calculator</h3>
-<input id="calcInput" placeholder="जैसे 120+80" inputmode="decimal">
-<div class="row">
-<button class="secondary" onclick="addCalc('7')">7</button>
-<button class="secondary" onclick="addCalc('8')">8</button>
-<button class="secondary" onclick="addCalc('9')">9</button>
-<button onclick="addCalc('/')">÷</button>
-<button class="secondary" onclick="addCalc('4')">4</button>
-<button class="secondary" onclick="addCalc('5')">5</button>
-<button class="secondary" onclick="addCalc('6')">6</button>
-<button onclick="addCalc('*')">×</button>
-<button class="secondary" onclick="addCalc('1')">1</button>
-<button class="secondary" onclick="addCalc('2')">2</button>
-<button class="secondary" onclick="addCalc('3')">3</button>
-<button onclick="addCalc('-')">−</button>
-<button class="secondary" onclick="addCalc('0')">0</button>
-<button class="secondary" onclick="addCalc('.')">.</button>
-<button class="secondary" onclick="document.getElementById('calcInput').value=''">C</button>
-<button onclick="addCalc('+')">+</button>
+<h3 id="calcTitle">Calculator</h3>
+<input id="calcInput" inputmode="decimal" placeholder="जैसे 12*5">
+<div class="row" style="grid-template-columns:repeat(4,1fr);margin-top:8px">
+<button class="secondary" onclick="calcKey('7')">7</button>
+<button class="secondary" onclick="calcKey('8')">8</button>
+<button class="secondary" onclick="calcKey('9')">9</button>
+<button onclick="calcKey('/')">÷</button>
+<button class="secondary" onclick="calcKey('4')">4</button>
+<button class="secondary" onclick="calcKey('5')">5</button>
+<button class="secondary" onclick="calcKey('6')">6</button>
+<button onclick="calcKey('*')">×</button>
+<button class="secondary" onclick="calcKey('1')">1</button>
+<button class="secondary" onclick="calcKey('2')">2</button>
+<button class="secondary" onclick="calcKey('3')">3</button>
+<button onclick="calcKey('-')">−</button>
+<button class="secondary" onclick="calcKey('0')">0</button>
+<button class="secondary" onclick="calcKey('.')">.</button>
+<button class="secondary" onclick="calcKey('clear')">C</button>
+<button onclick="calcKey('+')">+</button>
 </div>
-<button onclick="calculateExpression()">= Answer</button>
-<button class="secondary" onclick="document.getElementById('calculator').classList.add('hidden')">Close</button>
+<div class="actions">
+<button onclick="calculateExpression()" id="equalsBtn">= Answer</button>
+<button class="secondary" onclick="calcKey('back')" id="backBtn">⌫</button>
+<button class="secondary" onclick="toggleCalculator()" id="closeCalc">Close</button>
+</div>
 <p id="calcResult">Answer: —</p>
 </section>
 
-<section class="card">
-<h3 id="historyTitle">पुरानी डायरी / History</h3>
-<label id="searchLabel">तारीख या नाम खोजें</label>
-<input id="search" placeholder="तारीख या नाम">
-<button class="secondary" onclick="showHistory()" id="historyButton">History दिखाएँ</button>
-<div id="history"></div>
-</section>
-
-<section class="card">
+<section class="card hidden" id="settings">
 <h3 id="settingsTitle">Settings</h3>
 <label id="currencyLabel">Currency</label>
-<select id="currency" onchange="renderEntries();updateTotals();calculate()">
+<select id="currency" onchange="renderAll()">
 <option value="₹">₹ INR</option>
 <option value="$">$ USD</option>
 </select>
 <label id="defaultNameLabel">Default Name</label>
 <input id="defaultName" placeholder="नाम">
+<div class="actions">
 <button onclick="saveSettings()" id="settingsSave">Settings Save करें</button>
-<p class="small" id="privacy">हिसाब इसी मोबाइल में सेव होता है। समय-समय पर Backup डाउनलोड करें।</p>
+<button class="secondary" onclick="toggleSettings()" id="closeSettings">Close</button>
+</div>
+<button class="danger" onclick="deleteAll()" id="deleteBtn">सारा डेटा Delete करें</button>
 </section>
+
+<section class="card">
+<h3 id="historyTitle">पुरानी डायरी / History</h3>
+<label id="searchLabel">नाम, मोबाइल या तारीख खोजें</label>
+<input id="search" placeholder="नाम / मोबाइल / तारीख">
+<div class="actions"><button class="secondary" onclick="showHistory()" id="historyBtn">History दिखाएँ</button></div>
+<div id="history"></div>
+</section>
+<p class="small" id="privacy">डेटा इसी मोबाइल के browser storage में रहता है। Browser data मिटने पर हिसाब खो सकता है। Backup डाउनलोड करते रहें।</p>
 </main>
 
 <script>
 const $=id=>document.getElementById(id);
-const KEY="karigar_diary_v1";
+const KEY="karigar_diary_v2";
 let db={days:{},settings:{name:"",currency:"₹"}};
-let entries=[];
-let editIndex=-1;
+let entries=[],editing=-1;
 
 function today(){
  const d=new Date();
  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 }
-try{
- const old=localStorage.getItem(KEY);
- if(old) db=JSON.parse(old);
-}catch(e){}
-
-function persist(){
- try{
-  localStorage.setItem(KEY,JSON.stringify(db));
-  return true;
- }catch(e){
-  alert("Storage full. Backup download karein.");
-  return false;
- }
-}
+function lang(){return $("language").value}
 function money(n){
  return ($("currency").value||"₹")+Number(n||0).toLocaleString("en-IN",{maximumFractionDigits:2});
 }
-function dateKey(){return $("date").value||today()}
+try{
+ const saved=localStorage.getItem(KEY);
+ if(saved){const parsed=JSON.parse(saved);if(parsed.days)db=parsed;}
+}catch(e){}
 
-function dayTotals(list){
+const words={
+hi:{
+subtitle:"कारीगर की रोज़ की डायरी",infoTitle:"कारीगर की जानकारी",nameLabel:"नाम",dateLabel:"तारीख",phoneLabel:"मोबाइल नंबर",
+diaryTitle:"आज का काम लिखें",workLabel:"काम का विवरण",qtyLabel:"Quantity / मात्रा",priceLabel:"एक Quantity का Price",
+costLabel:"घटाने वाला खर्च / लागत",formula:"कुल रकम = Quantity × Price. मुनाफ़ा = कुल रकम − खर्च।",
+amountLabel:"कुल रकम",profitLabel:"मुनाफ़ा / नुकसान",saveBtn:"काम Save करें",continueBtn:"Continue / आगे लिखें",
+clearBtn:"फॉर्म साफ़ करें",grandTitle:"Grand Total / कुल हिसाब",totalAmountLabel:"कुल रकम",
+totalCostLabel:"कुल खर्च",grandProfitLabel:"Grand Profit / कुल मुनाफ़ा",shareBtn:"WhatsApp Share",
+calcBtn:"Calculator",settingsBtn:"Settings",backupBtn:"Backup Download",restoreBtn:"Backup Restore",
+printBtn:"Print / PDF",storageNote:"हिसाब इसी मोबाइल में सेव होता है। नियमित बैकअप रखें।",
+calcTitle:"Calculator",equalsBtn:"= Answer",backBtn:"⌫",closeCalc:"Close",settingsTitle:"Settings",
+currencyLabel:"Currency",defaultNameLabel:"Default Name",settingsSave:"Settings Save करें",closeSettings:"Close",
+deleteBtn:"सारा डेटा Delete करें",historyTitle:"पुरानी डायरी / History",searchLabel:"नाम, मोबाइल या तारीख खोजें",
+historyBtn:"History दिखाएँ",privacy:"डेटा इसी मोबाइल के browser storage में रहता है। Browser data मिटने पर हिसाब खो सकता है। Backup डाउनलोड करते रहें.",
+openDate:"इस तारीख का हिसाब खोलें",todayBtn:"आज की तारीख",empty:"इस तारीख का कोई काम सेव नहीं है।",
+saved:"काम सेव हो गया।",bad:"काम का विवरण, Quantity और Price भरें।",edit:"बदलें",del:"Delete",open:"खोलें",
+noHistory:"कोई पुराना हिसाब नहीं मिला।",restoreAsk:"Backup से मौजूदा डेटा बदल जाएगा। जारी रखें?",badBackup:"Backup file सही नहीं है।",
+settingsSaved:"Settings सेव हो गईं।",deleteAsk:"क्या सारा डेटा मिटाना चाहते हैं? पहले backup डाउनलोड करें।",
+deleted:"सारा डेटा मिट गया।",calcInvalid:"सही हिसाब लिखें।",answer:"जवाब: —",namePlaceholder:"कारीगर का नाम",
+workPlaceholder:"आज क्या काम किया, यहाँ लिखें...",searchPlaceholder:"नाम / मोबाइल / तारीख"
+},
+en:{
+subtitle:"Daily work diary for karigars",infoTitle:"Karigar Details",nameLabel:"Name",dateLabel:"Date",phoneLabel:"Mobile Number",
+diaryTitle:"Write Today's Work",workLabel:"Work Details",qtyLabel:"Quantity",priceLabel:"Price per Quantity",
+costLabel:"Cost / Expenses to subtract",formula:"Total amount = Quantity × Price. Profit = Total amount − Cost.",
+amountLabel:"Total Amount",profitLabel:"Profit / Loss",saveBtn:"Save Work",continueBtn:"Continue / Add More",
+clearBtn:"Clear Form",grandTitle:"Grand Total",totalAmountLabel:"Total Amount",totalCostLabel:"Total Cost",
+grandProfitLabel:"Grand Profit / Loss",shareBtn:"WhatsApp Share",calcBtn:"Calculator",settingsBtn:"Settings",
+backupBtn:"Download Backup",restoreBtn:"Restore Backup",printBtn:"Print / PDF",
+storageNote:"Your account is saved on this mobile. Keep regular backups.",calcTitle:"Calculator",equalsBtn:"= Answer",
+backBtn:"⌫",closeCalc:"Close",settingsTitle:"Settings",currencyLabel:"Currency",defaultNameLabel:"Default Name",
+settingsSave:"Save Settings",closeSettings:"Close",deleteBtn:"Delete All Data",historyTitle:"Previous Diary / History",
+searchLabel:"Search name, mobile or date",historyBtn:"Show History",
+privacy:"Data stays in this mobile browser storage. Clearing browser data may erase it. Download backups regularly.",
+openDate:"Open This Date",todayBtn:"Today",empty:"No work saved for this date.",saved:"Work saved.",
+bad:"Enter work details, quantity and price.",edit:"Edit",del:"Delete",open:"Open",noHistory:"No old accounts found.",
+restoreAsk:"Restoring will replace current data. Continue?",badBackup:"Invalid backup file.",
+settingsSaved:"Settings saved.",deleteAsk:"Delete all data? Download a backup first.",deleted:"All data deleted.",
+calcInvalid:"Enter a valid calculation.",answer:"Answer: —",namePlaceholder:"Karigar name",
+workPlaceholder:"Write today's work here...",searchPlaceholder:"Name / mobile / date"
+}
+};
+
+function translatePage(){
+ const t=words[lang()];
+ Object.keys(t).forEach(id=>{if($(id))$(id).textContent=t[id]});
+ $("name").placeholder=t.namePlaceholder;
+ $("work").placeholder=t.workPlaceholder;
+ $("search").placeholder=t.searchPlaceholder;
+ $("calcResult").textContent=t.answer;
+ renderAll();
+}
+
+function saveDB(){
+ try{localStorage.setItem(KEY,JSON.stringify(db));return true}
+ catch(e){alert("Storage full. Download a backup.");return false}
+}
+function dateKey(){return $("date").value||today()}
+function totals(list){
  return list.reduce((t,e)=>{
   const amount=Number(e.qty)*Number(e.price);
   const cost=Number(e.cost)||0;
@@ -184,16 +247,21 @@ function dayTotals(list){
 }
 function saveDay(){
  db.days[dateKey()]={name:$("name").value.trim(),phone:$("phone").value.trim(),entries:entries.map(e=>({...e}))};
- return persist();
+ return saveDB();
 }
 function loadDate(){
  const d=db.days[dateKey()]||{name:db.settings.name||"",phone:"",entries:[]};
- $("name").value=d.name||"";
+ $("name").value=d.name||db.settings.name||"";
  $("phone").value=d.phone||"";
  entries=(d.entries||[]).map(e=>({...e}));
- clearForm(false);
- renderEntries();
- updateTotals();
+ editing=-1;
+ clearForm();
+ renderAll();
+}
+function todayDate(){
+ saveDay();
+ $("date").value=today();
+ loadDate();
 }
 function calculate(){
  const q=Number($("qty").value)||0;
@@ -202,174 +270,169 @@ function calculate(){
  const amount=q*p,profit=amount-c;
  $("amount").textContent=money(amount);
  $("profit").textContent=(profit<0?"−":"")+money(Math.abs(profit));
- $("profitBox").style.background=profit<0?"#fff0ef":"#eaf7ee";
+ $("profitBox").style.background=profit<0?"#fff0ef":"var(--p)";
 }
-function clearForm(clear=true){
- if(clear){$("work").value="";$("qty").value="";$("price").value="";$("cost").value="";}
- editIndex=-1;
- $("saveButton").textContent=$("language").value==="en"?"Save work":"काम Save करें";
+function clearForm(){
+ $("work").value="";
+ $("qty").value="";
+ $("price").value="";
+ $("cost").value="0";
+ editing=-1;
+ $("saveBtn").textContent=words[lang()].saveBtn;
  calculate();
 }
-function saveEntry(){
+function readEntry(){
  const work=$("work").value.trim();
- const q=$("qty").value,p=$("price").value;
- const cost=Number($("cost").value)||0;
- if(!work||q===""||p===""){
-  alert($("language").value==="en"?"Enter work, quantity and price.":"काम, Quantity और Price भरें।");
-  return;
+ const q=$("qty").value,p=$("price").value,c=$("cost").value||"0";
+ if(!work||q===""||p===""){alert(words[lang()].bad);return null}
+ const qty=Number(q),price=Number(p),cost=Number(c);
+ if(!Number.isFinite(qty)||!Number.isFinite(price)||!Number.isFinite(cost)||qty<0||price<0||cost<0){
+  alert(words[lang()].bad);return null;
  }
- const qty=Number(q),price=Number(p);
- if(qty<0||price<0||cost<0){alert("Value 0 se kam nahi honi chahiye.");return;}
- const e={work,qty,price,cost};
- if(editIndex>=0) entries[editIndex]=e;
- else entries.push(e);
- if(saveDay()){
-  renderEntries();updateTotals();clearForm();
- }
+ return {work,qty,price,cost,amount:qty*price,profit:qty*price-cost};
+}
+function saveEntry(){
+ const e=readEntry();if(!e)return;
+ if(editing>=0)entries[editing]=e;else entries.push(e);
+ if(saveDay()){renderAll();clearForm();alert(words[lang()].saved)}
 }
 function continueWork(){
- if($("work").value.trim()||$("qty").value!==""||$("price").value!==""){
-  saveEntry();
- }
- $("work").focus();
+ if($("work").value.trim()||$("qty").value!==""||$("price").value!=="")saveEntry();
+ else $("work").focus();
 }
 function renderEntries(){
  const host=$("entries");host.innerHTML="";
- if(!entries.length){host.textContent=$("language").value==="en"?"No work saved for this date.":"इस तारीख का कोई काम अभी सेव नहीं है।";return;}
+ if(!entries.length){host.textContent=words[lang()].empty;return}
  entries.forEach((e,i)=>{
-  const amount=e.qty*e.price,profit=amount-(Number(e.cost)||0);
   const box=document.createElement("div");box.className="entry";
   const title=document.createElement("b");title.textContent=(i+1)+". "+e.work;
   const detail=document.createElement("p");
-  detail.textContent=`${e.qty} × ${money(e.price)} = ${money(amount)} | Cost: ${money(e.cost)} | Profit: ${money(profit)}`;
-  const edit=document.createElement("button");edit.className="secondary";edit.textContent="Edit";
+  detail.textContent=`${e.qty} × ${money(e.price)} = ${money(e.qty*e.price)}\n${words[lang()].costLabel}: ${money(e.cost)}\n${words[lang()].profitLabel}: ${money(e.qty*e.price-e.cost)}`;
+  const edit=document.createElement("button");edit.className="secondary";edit.textContent=words[lang()].edit;
   edit.onclick=()=>{
    $("work").value=e.work;$("qty").value=e.qty;$("price").value=e.price;$("cost").value=e.cost;
-   editIndex=i;$("saveButton").textContent="Update / बदलें";calculate();
+   editing=i;$("saveBtn").textContent=words[lang()].edit;calculate();
    window.scrollTo({top:0,behavior:"smooth"});
   };
-  const del=document.createElement("button");del.className="danger";del.textContent="Delete";
+  const del=document.createElement("button");del.className="danger";del.textContent=words[lang()].del;
   del.onclick=()=>{
-   if(confirm("Yeh entry delete karein?")){
-    entries.splice(i,1);saveDay();renderEntries();updateTotals();
-   }
+   if(confirm(words[lang()].del+"?")){entries.splice(i,1);saveDay();renderAll()}
   };
   box.append(title,detail,edit,del);host.append(box);
  });
 }
-function updateTotals(){
- const t=dayTotals(entries);
- $("grandAmount").textContent=money(t.amount);
- $("grandCost").textContent=money(t.cost);
+function renderTotals(){
+ const t=totals(entries);
+ $("totalAmount").textContent=money(t.amount);
+ $("totalCost").textContent=money(t.cost);
  $("grandProfit").textContent=(t.profit<0?"−":"")+money(Math.abs(t.profit));
- $("grandProfitBox").style.background=t.profit<0?"#fff0ef":"#eaf7ee";
+ $("grandProfitBox").style.background=t.profit<0?"#fff0ef":"var(--p)";
  calculate();
 }
+function renderAll(){renderEntries();renderTotals();showHistory()}
 function shareWhatsApp(){
  saveDay();
- const t=dayTotals(entries);
+ const t=totals(entries);
  const text=[
  "Karigar Diary",
  "Name: "+$("name").value,
  "Mobile: "+$("phone").value,
- "Date: "+dateKey(),
- ...entries.map((e,i)=>`${i+1}. ${e.work} | ${e.qty} x ${money(e.price)} | Cost ${money(e.cost)}`),
- "Total: "+money(t.amount),
- "Cost: "+money(t.cost),
- "Profit/Loss: "+money(t.profit)
+ "Date: "+dateKey(),"",
+ ...entries.map((e,i)=>`${i+1}. ${e.work} | ${e.qty} × ${money(e.price)} | Cost ${money(e.cost)} | Profit ${money(e.qty*e.price-e.cost)}`),
+ "Total: "+money(t.amount),"Cost: "+money(t.cost),"Grand Profit/Loss: "+money(t.profit)
  ].join("\n");
  window.open("https://wa.me/?text="+encodeURIComponent(text),"_blank");
 }
-function showCalculator(){
+function toggleCalculator(){
  $("calculator").classList.toggle("hidden");
- $("calculator").scrollIntoView({behavior:"smooth"});
+ if(!$("calculator").classList.contains("hidden"))$("calculator").scrollIntoView({behavior:"smooth"});
 }
-function addCalc(v){$("calcInput").value+=$("calcInput").dataset.done?"":v;$("calcInput").dataset.done="";}
+function calcKey(k){
+ const input=$("calcInput");
+ if(k==="clear"){input.value="";input.dataset.done="";$("calcResult").textContent=words[lang()].answer;return}
+ if(k==="back"){input.value=input.value.slice(0,-1);input.dataset.done="";return}
+ if(input.dataset.done==="1"){input.value="";input.dataset.done=""}
+ input.value+=k;
+}
 function calculateExpression(){
- const x=$("calcInput").value.trim();
- if(!x||!/^[0-9+\-*/(). %]+$/.test(x)){ $("calcResult").textContent="Invalid calculation";return;}
+ const input=$("calcInput"),x=input.value.trim();
+ if(!x||!/^[0-9+\-*/(). %]+$/.test(x)){
+  $("calcResult").textContent=words[lang()].calcInvalid;return;
+ }
  try{
-  const n=Function('"use strict";return ('+x+')')();
-  if(Number.isFinite(n)){
-   $("calcResult").textContent="Answer: "+n;
-   $("calcInput").dataset.done="1";
-  }else $("calcResult").textContent="Invalid calculation";
- }catch(e){$("calcResult").textContent="Invalid calculation";}
+  const answer=Function('"use strict";return ('+x+')')();
+  if(typeof answer==="number"&&Number.isFinite(answer)){
+   $("calcResult").textContent=(lang()==="en"?"Answer: ":"जवाब: ")+answer.toLocaleString("en-IN",{maximumFractionDigits:8});
+   input.dataset.done="1";
+  }else $("calcResult").textContent=words[lang()].calcInvalid;
+ }catch(e){$("calcResult").textContent=words[lang()].calcInvalid}
 }
-function downloadBackup(){
- saveDay();
- const blob=new Blob([JSON.stringify(db,null,2)],{type:"application/json"});
- const a=document.createElement("a");
- a.href=URL.createObjectURL(blob);a.download="karigar-diary-backup.json";a.click();
- URL.revokeObjectURL(a.href);
-}
-function restoreBackup(ev){
- const file=ev.target.files[0];if(!file)return;
- const r=new FileReader();
- r.onload=()=>{
-  try{
-   const d=JSON.parse(r.result);
-   if(!d.days)throw Error();
-   if(confirm("Current data replace hoga. Continue?")){
-    db=d;persist();loadDate();showHistory();
-   }
-  }catch(e){alert("Backup file sahi nahi hai.");}
- };
- r.readAsText(file);ev.target.value="";
+$("calcInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();calculateExpression()}});
+function toggleSettings(){
+ $("settings").classList.toggle("hidden");
+ $("defaultName").value=db.settings.name||$("name").value;
+ $("currency").value=db.settings.currency||"₹";
 }
 function saveSettings(){
  db.settings={name:$("defaultName").value.trim(),currency:$("currency").value};
- persist();alert("Settings saved.");
+ saveDB();$("name").value=db.settings.name||$("name").value;
+ renderAll();alert(words[lang()].settingsSaved);
+}
+function backup(){
+ saveDay();
+ const a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:"application/json"}));
+ a.download="karigar-diary-backup.json";a.click();
+ URL.revokeObjectURL(a.href);
+}
+function restoreBackup(event){
+ const file=event.target.files[0];if(!file)return;
+ const reader=new FileReader();
+ reader.onload=()=>{
+  try{
+   const data=JSON.parse(reader.result);
+   if(!data.days)throw Error();
+   if(confirm(words[lang()].restoreAsk)){
+    db=data;saveDB();loadDate();renderAll();
+   }
+  }catch(e){alert(words[lang()].badBackup)}
+  event.target.value="";
+ };
+ reader.readAsText(file);
+}
+function deleteAll(){
+ if(!confirm(words[lang()].deleteAsk))return;
+ db={days:{},settings:{name:"",currency:"₹"}};
+ entries=[];saveDB();$("name").value="";$("phone").value="";
+ loadDate();renderAll();alert(words[lang()].deleted);
 }
 function showHistory(){
- const host=$("history");host.innerHTML="";
+ const host=$("history");if(!host)return;
+ host.innerHTML="";
  const q=$("search").value.trim().toLowerCase();
- Object.keys(db.days).sort().reverse().forEach(d=>{
+ const dates=Object.keys(db.days).sort().reverse().filter(d=>{
   const day=db.days[d];
-  if(q&&!d.includes(q)&&!(day.name||"").toLowerCase().includes(q))return;
-  const t=dayTotals(day.entries||[]);
-  const row=document.createElement("div");row.className="entry";
+  return !q||d.includes(q)||(day.name||"").toLowerCase().includes(q)||(day.phone||"").includes(q);
+ });
+ if(!dates.length){host.textContent=words[lang()].noHistory;return}
+ dates.forEach(d=>{
+  const day=db.days[d],t=totals(day.entries||[]);
+  const box=document.createElement("div");box.className="entry";
   const title=document.createElement("b");title.textContent=d+" — "+(day.name||"");
-  const detail=document.createElement("p");detail.textContent="Profit: "+money(t.profit);
-  const open=document.createElement("button");open.className="secondary";open.textContent="Open";
-  open.onclick=()=>{saveDay();$("date").value=d;loadDate();window.scrollTo({top:0,behavior:"smooth"});};
-  row.append(title,detail,open);host.append(row);
+  const info=document.createElement("p");info.textContent=(day.phone||"")+" | "+words[lang()].profitLabel+": "+money(t.profit);
+  const open=document.createElement("button");open.className="secondary";open.textContent=words[lang()].open;
+  open.onclick=()=>{saveDay();$("date").value=d;loadDate();window.scrollTo({top:0,behavior:"smooth"})};
+  box.append(title,info,open);host.append(box);
  });
 }
-const en={
- subtitle:"Daily diary for karigars",infoTitle:"Karigar Details",nameLabel:"Name",dateLabel:"Date",phoneLabel:"Mobile Number",
- openDate:"Open Date",diaryTitle:"Write Today's Work",workLabel:"Work Details",qtyLabel:"Quantity",priceLabel:"Price per Quantity",costLabel:"Cost / Expenses to Subtract",
- amountLabel:"Total Amount",profitLabel:"Profit after expenses",saveButton:"Save Work",continueButton:"Continue / Add More",clearButton:"Clear Form",
- totalTitle:"Grand Total",grandAmountLabel:"Total Amount",grandCostLabel:"Total Expenses",grandProfitLabel:"Grand Profit / Loss",
- shareButton:"WhatsApp Share",calcButton:"Calculator",backupButton:"Download Backup",restoreButton:"Restore Backup",
- calculatorTitle:"Calculator",historyTitle:"Previous Diary / History",searchLabel:"Search date or name",historyButton:"Show History",
- settingsTitle:"Settings",currencyLabel:"Currency",defaultNameLabel:"Default Name",settingsSave:"Save Settings",
- privacy:"Your diary is saved in this mobile browser. Download backups regularly."
-};
-const hi={
- subtitle:"कारीगर की रोज़ की डायरी",infoTitle:"कारीगर की जानकारी",nameLabel:"नाम",dateLabel:"तारीख",phoneLabel:"मोबाइल नंबर",
- openDate:"इस तारीख का हिसाब खोलें",diaryTitle:"आज का काम लिखें",workLabel:"काम का विवरण",qtyLabel:"Quantity / मात्रा",priceLabel:"एक Quantity का Price",costLabel:"घटाने वाला खर्च / लागत",
- amountLabel:"कुल रकम",profitLabel:"खर्च घटाकर Profit / मुनाफ़ा",saveButton:"काम Save करें",continueButton:"Continue / आगे लिखें",clearButton:"फॉर्म साफ़ करें",
- totalTitle:"Grand Total / कुल हिसाब",grandAmountLabel:"कुल रकम",grandCostLabel:"कुल खर्च",grandProfitLabel:"Grand Profit / कुल मुनाफ़ा",
- shareButton:"WhatsApp Share",calcButton:"Calculator",backupButton:"Backup Download",restoreButton:"Backup Restore",
- calculatorTitle:"Calculator",historyTitle:"पुरानी डायरी / History",searchLabel:"तारीख या नाम खोजें",historyButton:"History दिखाएँ",
- settingsTitle:"Settings",currencyLabel:"Currency",defaultNameLabel:"Default Name",settingsSave:"Settings Save करें",
- privacy:"हिसाब इसी मोबाइल में सेव होता है। समय-समय पर Backup डाउनलोड करें।"
-};
-function translatePage(){
- const dict=$("language").value==="en"?en:hi;
- Object.keys(dict).forEach(id=>{if($(id))$(id).textContent=dict[id];});
- $("name").placeholder=dict===en?"Karigar name":"कारीगर का नाम";
- $("work").placeholder=dict===en?"Write today's work here...":"आज क्या काम किया, यहाँ लिखें...";
- renderEntries();
-}
-$("date").value=today();
-$("defaultName").value=db.settings.name||"";
-$("currency").value=db.settings.currency||"₹";
-$("name").value=db.settings.name||"";
-$("date").addEventListener("change",()=>{saveDay();loadDate();});
+$("date").addEventListener("change",()=>{saveDay();loadDate()});
 $("name").addEventListener("change",saveDay);
 $("phone").addEventListener("change",saveDay);
+$("search").addEventListener("input",showHistory);
+
+$("date").value=today();
+$("currency").value=db.settings.currency||"₹";
+$("name").value=db.settings.name||"";
 loadDate();
 </script>
 </body>
